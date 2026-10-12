@@ -1,0 +1,1046 @@
+{
+  "id": "marketplaces",
+  "version": "0.1.0",
+  "coreApi": "1",
+  "runtime": "service",
+  "category": "commerce",
+  "name": {
+    "en": "Marketplace Studio",
+    "de": "Marketplace Studio",
+    "fr": "Studio marketplaces",
+    "es": "Studio marketplaces"
+  },
+  "permissions": [
+    "data.read",
+    "data.write",
+    "admin.slot",
+    "service.call",
+    "products.read",
+    "channels.read",
+    "orders.read",
+    "orders.import",
+    "payments.record",
+    "customers.pii",
+    "jobs.write",
+    "events:self"
+  ],
+  "entities": [
+    {
+      "name": "connections",
+      "label": {
+        "en": "Connections",
+        "de": "Verbindungen",
+        "fr": "Connexions",
+        "es": "Conexiones"
+      },
+      "publicRead": false,
+      "fields": [
+        {
+          "name": "name",
+          "label": {
+            "en": "Connection name",
+            "de": "Verbindungsname",
+            "fr": "Nom de connexion",
+            "es": "Nombre"
+          },
+          "kind": "string",
+          "translatable": true,
+          "required": true
+        },
+        {
+          "name": "channel_id",
+          "label": {
+            "en": "Sales channel",
+            "de": "Verkaufskanal",
+            "fr": "Canal de vente",
+            "es": "Canal de venta"
+          },
+          "kind": "string",
+          "coreReference": "salesChannel",
+          "indexed": true,
+          "required": true,
+          "unique": true
+        },
+        {
+          "name": "provider",
+          "label": {
+            "en": "Provider",
+            "de": "Anbieter",
+            "fr": "Fournisseur",
+            "es": "Proveedor"
+          },
+          "kind": "string",
+          "required": true,
+          "choices": [
+            {
+              "value": "amazon",
+              "label": {
+                "en": "Amazon",
+                "de": "Amazon",
+                "fr": "Amazon",
+                "es": "Amazon"
+              }
+            },
+            {
+              "value": "ebay",
+              "label": {
+                "en": "eBay",
+                "de": "eBay",
+                "fr": "eBay",
+                "es": "eBay"
+              }
+            },
+            {
+              "value": "kaufland",
+              "label": {
+                "en": "Kaufland",
+                "de": "Kaufland",
+                "fr": "Kaufland",
+                "es": "Kaufland"
+              }
+            }
+          ]
+        },
+        {
+          "name": "account",
+          "label": {
+            "en": "Server credential alias",
+            "de": "Server-Zugangskennung",
+            "fr": "Alias serveur",
+            "es": "Alias de credencial"
+          },
+          "kind": "string",
+          "required": true
+        },
+        {
+          "name": "destination",
+          "label": {
+            "en": "Marketplace identifier",
+            "de": "Marktplatzkennung",
+            "fr": "Identifiant marketplace",
+            "es": "Identificador marketplace"
+          },
+          "kind": "string",
+          "required": true
+        },
+        {
+          "name": "locale",
+          "label": {
+            "en": "Content language",
+            "de": "Inhaltssprache",
+            "fr": "Langue de contenu",
+            "es": "Idioma de contenido"
+          },
+          "kind": "string",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "label": {
+            "en": "Currency",
+            "de": "W\u00e4hrung",
+            "fr": "Devise",
+            "es": "Moneda"
+          },
+          "kind": "string",
+          "required": true
+        },
+        {
+          "name": "active",
+          "label": {
+            "en": "Synchronization enabled",
+            "de": "Synchronisierung aktiv",
+            "fr": "Synchronisation active",
+            "es": "Sincronizaci\u00f3n activa"
+          },
+          "kind": "boolean",
+          "required": true
+        },
+        {
+          "name": "policy",
+          "label": {
+            "en": "Provider settings \u00b7 policies and product type",
+            "de": "Anbietereinstellungen \u00b7 Richtlinien und Produkttyp",
+            "fr": "R\u00e9glages fournisseur \u00b7 r\u00e8gles et type",
+            "es": "Ajustes \u00b7 pol\u00edticas y tipo"
+          },
+          "kind": "json"
+        }
+      ]
+    },
+    {
+      "name": "listings",
+      "label": {
+        "en": "Offers",
+        "de": "Angebote",
+        "fr": "Offres",
+        "es": "Ofertas"
+      },
+      "publicRead": false,
+      "fields": [
+        {
+          "name": "connection_id",
+          "label": {
+            "en": "Connection",
+            "de": "Verbindung",
+            "fr": "Connexion",
+            "es": "Conexi\u00f3n"
+          },
+          "kind": "string",
+          "references": "connections",
+          "indexed": true,
+          "required": true
+        },
+        {
+          "name": "product_id",
+          "label": {
+            "en": "Product",
+            "de": "Produkt",
+            "fr": "Produit",
+            "es": "Producto"
+          },
+          "kind": "string",
+          "coreReference": "product",
+          "indexed": true,
+          "required": true
+        },
+        {
+          "name": "listing_key",
+          "label": {
+            "en": "Stable listing identity",
+            "de": "Stabile Angebotskennung",
+            "fr": "Identit\u00e9 stable",
+            "es": "Identidad estable"
+          },
+          "kind": "string",
+          "required": true,
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "sku",
+          "label": {
+            "en": "Marketplace SKU",
+            "de": "Marktplatz-SKU",
+            "fr": "SKU marketplace",
+            "es": "SKU marketplace"
+          },
+          "kind": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "name": "title",
+          "label": {
+            "en": "Custom title \u00b7 empty inherits",
+            "de": "Eigener Titel \u00b7 leer erbt",
+            "fr": "Titre \u00b7 vide h\u00e9rite",
+            "es": "T\u00edtulo \u00b7 vac\u00edo hereda"
+          },
+          "kind": "string",
+          "translatable": true
+        },
+        {
+          "name": "description",
+          "label": {
+            "en": "Custom description \u00b7 empty inherits",
+            "de": "Eigene Beschreibung \u00b7 leer erbt",
+            "fr": "Description \u00b7 vide h\u00e9rite",
+            "es": "Descripci\u00f3n \u00b7 vac\u00edo hereda"
+          },
+          "kind": "string",
+          "translatable": true
+        },
+        {
+          "name": "images",
+          "label": {
+            "en": "Custom HTTPS images \u00b7 empty inherits",
+            "de": "Eigene HTTPS-Bilder \u00b7 leer erbt",
+            "fr": "Images HTTPS \u00b7 vide h\u00e9rite",
+            "es": "Im\u00e1genes HTTPS \u00b7 vac\u00edo hereda"
+          },
+          "kind": "json"
+        },
+        {
+          "name": "attributes",
+          "label": {
+            "en": "Provider-specific fields",
+            "de": "Anbieterspezifische Felder",
+            "fr": "Attributs fournisseur",
+            "es": "Campos del proveedor"
+          },
+          "kind": "json"
+        },
+        {
+          "name": "mapping",
+          "label": {
+            "en": "Field mapping \u00b7 target to source path",
+            "de": "Feldzuordnung \u00b7 Ziel zu Quellpfad",
+            "fr": "Mappage \u00b7 cible vers source",
+            "es": "Mapeo \u00b7 destino a fuente"
+          },
+          "kind": "json"
+        },
+        {
+          "name": "price",
+          "label": {
+            "en": "Override price \u00b7 exact money",
+            "de": "Abweichender Preis \u00b7 exakter Betrag",
+            "fr": "Prix personnalis\u00e9 \u00b7 montant exact",
+            "es": "Precio \u00b7 importe exacto"
+          },
+          "kind": "money"
+        },
+        {
+          "name": "state",
+          "label": {
+            "en": "State",
+            "de": "Status",
+            "fr": "\u00c9tat",
+            "es": "Estado"
+          },
+          "kind": "string",
+          "choices": [
+            {
+              "value": "draft",
+              "label": {
+                "en": "Draft",
+                "de": "Entwurf",
+                "fr": "Brouillon",
+                "es": "Borrador"
+              }
+            },
+            {
+              "value": "ready",
+              "label": {
+                "en": "Ready",
+                "de": "Bereit",
+                "fr": "Pr\u00eat",
+                "es": "Listo"
+              }
+            },
+            {
+              "value": "submitted",
+              "label": {
+                "en": "Submitted \u00b7 provider review pending",
+                "de": "\u00dcbermittelt \u00b7 Anbieterpr\u00fcfung offen",
+                "fr": "Soumis \u00b7 contr\u00f4le en attente",
+                "es": "Enviado \u00b7 revisi\u00f3n pendiente"
+              }
+            },
+            {
+              "value": "needs_review",
+              "label": {
+                "en": "Needs review",
+                "de": "Pr\u00fcfung n\u00f6tig",
+                "fr": "\u00c0 v\u00e9rifier",
+                "es": "Revisi\u00f3n necesaria"
+              }
+            },
+            {
+              "value": "uncertain",
+              "label": {
+                "en": "Outcome unknown \u00b7 reconcile first",
+                "de": "Ergebnis unklar \u00b7 zuerst abgleichen",
+                "fr": "R\u00e9sultat inconnu \u00b7 v\u00e9rifier",
+                "es": "Resultado incierto \u00b7 conciliar"
+              }
+            }
+          ],
+          "required": true
+        },
+        {
+          "name": "snapshot",
+          "label": {
+            "en": "Preview and provider response",
+            "de": "Vorschau und Anbieterantwort",
+            "fr": "Aper\u00e7u et r\u00e9ponse",
+            "es": "Vista previa y respuesta"
+          },
+          "kind": "json"
+        },
+        {
+          "name": "provider_settings",
+          "label": {
+            "en": "Offer category & policies",
+            "de": "Kategorie & Richtlinien des Angebots",
+            "fr": "Cat\u00e9gorie et r\u00e8gles de l\u2019offre",
+            "es": "Categor\u00eda y pol\u00edticas de oferta"
+          },
+          "kind": "json"
+        }
+      ]
+    },
+    {
+      "name": "inbox",
+      "label": {
+        "en": "Order inbox",
+        "de": "Bestelleingang",
+        "fr": "Bo\u00eete de commandes",
+        "es": "Bandeja de pedidos"
+      },
+      "publicRead": false,
+      "fields": [
+        {
+          "name": "connection_id",
+          "label": {
+            "en": "Connection",
+            "de": "Verbindung",
+            "fr": "Connexion",
+            "es": "Conexi\u00f3n"
+          },
+          "kind": "string",
+          "references": "connections",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "name": "external_id",
+          "label": {
+            "en": "Provider order ID",
+            "de": "Anbieter-Bestellnummer",
+            "fr": "ID commande fournisseur",
+            "es": "ID pedido proveedor"
+          },
+          "kind": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "name": "source_key",
+          "label": {
+            "en": "Import identity",
+            "de": "Importkennung",
+            "fr": "Identit\u00e9 import",
+            "es": "Identidad importaci\u00f3n"
+          },
+          "kind": "string",
+          "required": true,
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "state",
+          "label": {
+            "en": "State",
+            "de": "Status",
+            "fr": "\u00c9tat",
+            "es": "Estado"
+          },
+          "kind": "string",
+          "required": true,
+          "choices": [
+            {
+              "value": "needs_review",
+              "label": {
+                "en": "Review mapping, taxes and payment",
+                "de": "Zuordnung, Steuern und Zahlung pr\u00fcfen",
+                "fr": "V\u00e9rifier mappage, taxes et paiement",
+                "es": "Revisar mapeo, impuestos y pago"
+              }
+            },
+            {
+              "value": "imported",
+              "label": {
+                "en": "Imported",
+                "de": "Importiert",
+                "fr": "Import\u00e9",
+                "es": "Importado"
+              }
+            }
+          ]
+        },
+        {
+          "name": "source",
+          "label": {
+            "en": "Original source snapshot",
+            "de": "Urspr\u00fcngliche Quelldaten",
+            "fr": "Donn\u00e9es source",
+            "es": "Datos originales"
+          },
+          "kind": "json",
+          "required": true
+        },
+        {
+          "name": "order_id",
+          "label": {
+            "en": "Native order ID",
+            "de": "Vendune-Bestellnummer",
+            "fr": "ID commande Vendune",
+            "es": "ID pedido Vendune"
+          },
+          "kind": "string"
+        },
+        {
+          "name": "review",
+          "label": {
+            "en": "Reviewed exact order snapshot",
+            "de": "Gepr\u00fcfte exakte Bestelldaten",
+            "fr": "Commande exacte v\u00e9rifi\u00e9e",
+            "es": "Pedido exacto revisado"
+          },
+          "kind": "json"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "list_connections",
+      "description": "List private connections",
+      "handler": "list",
+      "entity": "connections",
+      "permission": "apps.manage",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "after": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "filter": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "additionalProperties": false
+      },
+      "readOnly": true,
+      "mcp": true
+    },
+    {
+      "name": "save_connections",
+      "description": "Save private connections",
+      "handler": "save",
+      "entity": "connections",
+      "permission": "apps.manage",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fields": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "fields"
+        ]
+      },
+      "readOnly": false,
+      "mcp": true
+    },
+    {
+      "name": "list_listings",
+      "description": "List private listings",
+      "handler": "list",
+      "entity": "listings",
+      "permission": "apps.manage",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "after": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "filter": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "additionalProperties": false
+      },
+      "readOnly": true,
+      "mcp": true
+    },
+    {
+      "name": "save_listings",
+      "description": "Save private listings",
+      "handler": "save",
+      "entity": "listings",
+      "permission": "apps.manage",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fields": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "fields"
+        ]
+      },
+      "readOnly": false,
+      "mcp": true
+    },
+    {
+      "name": "list_inbox",
+      "description": "List private inbox",
+      "handler": "list",
+      "entity": "inbox",
+      "permission": "customers.pii",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "after": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "filter": {
+            "type": "object"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "additionalProperties": false
+      },
+      "readOnly": true,
+      "mcp": true
+    },
+    {
+      "name": "save_inbox",
+      "description": "Save private inbox",
+      "handler": "save",
+      "entity": "inbox",
+      "permission": "customers.pii",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fields": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "fields"
+        ]
+      },
+      "readOnly": false,
+      "mcp": true
+    },
+    {
+      "name": "prepare",
+      "handler": "service",
+      "description": "Prepare",
+      "permission": "apps.manage",
+      "readOnly": false,
+      "mcp": true,
+      "flowAllowed": false,
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "listingId": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "listingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "sync",
+      "handler": "job",
+      "description": "Sync",
+      "permission": "apps.manage",
+      "readOnly": false,
+      "mcp": true,
+      "flowAllowed": true,
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "connectionId": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "listing",
+              "orders"
+            ]
+          },
+          "listingId": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "after": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "cursor": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "connectionId",
+          "kind"
+        ],
+        "additionalProperties": false
+      },
+      "requiredPermissions": [
+        "customers.pii"
+      ]
+    },
+    {
+      "name": "import_order",
+      "handler": "service",
+      "description": "Import order",
+      "permission": "orders.write",
+      "readOnly": false,
+      "mcp": true,
+      "flowAllowed": false,
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "inboxId": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "approve": {
+            "type": "boolean"
+          },
+          "snapshot": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "inboxId",
+          "approve",
+          "snapshot"
+        ],
+        "additionalProperties": false
+      },
+      "requiredPermissions": [
+        "payments.manage",
+        "customers.pii"
+      ]
+    },
+    {
+      "name": "review_order",
+      "handler": "service",
+      "description": "Review source order and SKU mappings",
+      "permission": "customers.pii",
+      "readOnly": true,
+      "mcp": true,
+      "flowAllowed": false,
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "inboxId": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "inboxId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "events": [
+    "app.marketplaces.job_sync"
+  ],
+  "slots": [],
+  "surfaces": [
+    {
+      "id": "connections",
+      "location": "admin.navigation",
+      "label": {
+        "en": "Connections",
+        "de": "Verbindungen",
+        "fr": "Connexions",
+        "es": "Conexiones"
+      },
+      "uiPath": "native/connections",
+      "actions": [
+        "list_connections",
+        "save_connections"
+      ],
+      "permission": "apps.manage"
+    },
+    {
+      "id": "listings",
+      "location": "admin.navigation",
+      "label": {
+        "en": "Offers",
+        "de": "Angebote",
+        "fr": "Offres",
+        "es": "Ofertas"
+      },
+      "uiPath": "native/listings",
+      "actions": [
+        "list_listings",
+        "save_listings"
+      ],
+      "permission": "apps.manage"
+    },
+    {
+      "id": "inbox",
+      "location": "admin.navigation",
+      "label": {
+        "en": "Order inbox",
+        "de": "Bestelleingang",
+        "fr": "Bo\u00eete de commandes",
+        "es": "Bandeja de pedidos"
+      },
+      "uiPath": "native/inbox",
+      "actions": [
+        "list_inbox",
+        "save_inbox"
+      ],
+      "permission": "apps.manage"
+    }
+  ],
+  "apiRoutes": [
+    {
+      "path": "prepare",
+      "method": "POST",
+      "scope": "admin",
+      "action": "prepare"
+    },
+    {
+      "path": "sync",
+      "method": "POST",
+      "scope": "admin",
+      "action": "sync"
+    },
+    {
+      "path": "import_order",
+      "method": "POST",
+      "scope": "admin",
+      "action": "import_order"
+    }
+  ],
+  "views": [
+    {
+      "id": "connections",
+      "layout": "stack",
+      "blocks": [
+        {
+          "id": "help",
+          "kind": "text",
+          "title": {
+            "en": "Connections",
+            "de": "Verbindungen",
+            "fr": "Connexions",
+            "es": "Conexiones"
+          },
+          "text": {
+            "en": "Review before publishing. Provider credentials remain on the separate server.",
+            "de": "Vor Ver\u00f6ffentlichung pr\u00fcfen. Anbieterzug\u00e4nge bleiben auf dem getrennten Server.",
+            "fr": "V\u00e9rifiez avant publication. Identifiants sur le serveur s\u00e9par\u00e9.",
+            "es": "Revisa antes de publicar. Credenciales en el servidor separado."
+          }
+        },
+        {
+          "id": "records",
+          "kind": "table",
+          "title": {
+            "en": "Connections",
+            "de": "Verbindungen",
+            "fr": "Connexions",
+            "es": "Conexiones"
+          },
+          "entity": "connections",
+          "readAction": "list_connections",
+          "writeAction": "save_connections",
+          "inlineEdit": true
+        },
+        {
+          "id": "editor",
+          "kind": "form",
+          "title": {
+            "en": "Connections",
+            "de": "Verbindungen",
+            "fr": "Connexions",
+            "es": "Conexiones"
+          },
+          "entity": "connections",
+          "readAction": "list_connections",
+          "writeAction": "save_connections"
+        }
+      ]
+    },
+    {
+      "id": "listings",
+      "layout": "stack",
+      "blocks": [
+        {
+          "id": "help",
+          "kind": "text",
+          "title": {
+            "en": "Offers",
+            "de": "Angebote",
+            "fr": "Offres",
+            "es": "Ofertas"
+          },
+          "text": {
+            "en": "Review before publishing. Provider credentials remain on the separate server.",
+            "de": "Vor Ver\u00f6ffentlichung pr\u00fcfen. Anbieterzug\u00e4nge bleiben auf dem getrennten Server.",
+            "fr": "V\u00e9rifiez avant publication. Identifiants sur le serveur s\u00e9par\u00e9.",
+            "es": "Revisa antes de publicar. Credenciales en el servidor separado."
+          }
+        },
+        {
+          "id": "records",
+          "kind": "table",
+          "title": {
+            "en": "Offers",
+            "de": "Angebote",
+            "fr": "Offres",
+            "es": "Ofertas"
+          },
+          "entity": "listings",
+          "readAction": "list_listings",
+          "writeAction": "save_listings",
+          "inlineEdit": true
+        },
+        {
+          "id": "editor",
+          "kind": "form",
+          "title": {
+            "en": "Offers",
+            "de": "Angebote",
+            "fr": "Offres",
+            "es": "Ofertas"
+          },
+          "entity": "listings",
+          "readAction": "list_listings",
+          "writeAction": "save_listings"
+        }
+      ]
+    },
+    {
+      "id": "inbox",
+      "layout": "stack",
+      "blocks": [
+        {
+          "id": "help",
+          "kind": "text",
+          "title": {
+            "en": "Order inbox",
+            "de": "Bestelleingang",
+            "fr": "Bo\u00eete de commandes",
+            "es": "Bandeja de pedidos"
+          },
+          "text": {
+            "en": "Review before publishing. Provider credentials remain on the separate server.",
+            "de": "Vor Ver\u00f6ffentlichung pr\u00fcfen. Anbieterzug\u00e4nge bleiben auf dem getrennten Server.",
+            "fr": "V\u00e9rifiez avant publication. Identifiants sur le serveur s\u00e9par\u00e9.",
+            "es": "Revisa antes de publicar. Credenciales en el servidor separado."
+          }
+        },
+        {
+          "id": "records",
+          "kind": "table",
+          "title": {
+            "en": "Order inbox",
+            "de": "Bestelleingang",
+            "fr": "Bo\u00eete de commandes",
+            "es": "Bandeja de pedidos"
+          },
+          "entity": "inbox",
+          "readAction": "list_inbox",
+          "writeAction": "save_inbox",
+          "inlineEdit": true
+        },
+        {
+          "id": "editor",
+          "kind": "form",
+          "title": {
+            "en": "Order inbox",
+            "de": "Bestelleingang",
+            "fr": "Bo\u00eete de commandes",
+            "es": "Bandeja de pedidos"
+          },
+          "entity": "inbox",
+          "readAction": "list_inbox",
+          "writeAction": "save_inbox"
+        }
+      ]
+    }
+  ],
+  "intelligence": {
+    "description": {
+      "en": "Map products, validate offers and review imported orders. Publishing needs explicit merchant consent.",
+      "de": "Produkte zuordnen, Angebote pr\u00fcfen und Bestelleingang bearbeiten. Ver\u00f6ffentlichung ben\u00f6tigt H\u00e4ndlerfreigabe.",
+      "fr": "Mapper et v\u00e9rifier les offres et commandes. Publication apr\u00e8s accord.",
+      "es": "Mapear y revisar ofertas y pedidos. Publicaci\u00f3n con aprobaci\u00f3n."
+    },
+    "tools": [
+      "prepare",
+      "sync",
+      "list_inbox"
+    ],
+    "entities": [
+      "listings",
+      "inbox"
+    ]
+  },
+  "presentation": {
+    "description": {
+      "en": "Amazon, eBay and Kaufland: channel-specific content, reviewed field mapping, leased synchronization and native order intake. Seller authorization and a separate Rust service required.",
+      "de": "Amazon, eBay und Kaufland: kanalspezifische Inhalte, pr\u00fcfbare Feldzuordnung, Synchronisierung und nativer Bestellimport. H\u00e4ndlerfreigabe und separater Rust-Dienst erforderlich.",
+      "fr": "Amazon, eBay et Kaufland : contenus par canal, mappage, synchronisation et commandes natives. Autorisation vendeur et service Rust requis.",
+      "es": "Amazon, eBay y Kaufland: contenidos, mapeo, sincronizaci\u00f3n y pedidos nativos. Requiere autorizaci\u00f3n y servicio Rust."
+    }
+  }
+}

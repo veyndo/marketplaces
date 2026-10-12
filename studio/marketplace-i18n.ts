@@ -1,0 +1,335 @@
+/** Marketplace app vocabulary; UI language is independent of inherited content language. */
+import { useLocale } from "../../../../frontend/src/shared/i18n/i18n";
+import { orderWords } from "./marketplace-order-i18n";
+export const marketplaceWords = {
+  amazon: ["Amazon", "Amazon", "Amazon", "Amazon"],
+  ebay: ["eBay", "eBay", "eBay", "eBay"],
+  kaufland: ["Kaufland", "Kaufland", "Kaufland", "Kaufland"],
+  ...orderWords,
+  heading: [
+    "One catalog. More places to sell.",
+    "Ein Katalog. Mehr Orte zum Verkaufen.",
+    "Un catalogue. Plus de points de vente.",
+    "Un catálogo. Más lugares para vender.",
+  ],
+  intro: [
+    "Connect a seller account, adapt your offers and bring orders back into Vendune.",
+    "Händlerkonto verbinden, Angebote anpassen und Bestellungen in Vendune übernehmen.",
+    "Connectez un compte vendeur, adaptez vos offres et importez les commandes.",
+    "Conecta tu cuenta, adapta ofertas e importa pedidos.",
+  ],
+  connections: ["Connections", "Verbindungen", "Connexions", "Conexiones"],
+  offers: ["Offers", "Angebote", "Offres", "Ofertas"],
+  inbox: [
+    "Order inbox",
+    "Bestelleingang",
+    "Commandes reçues",
+    "Pedidos recibidos",
+  ],
+  jobs: [
+    "Sync activity",
+    "Synchronisierungen",
+    "Synchronisations",
+    "Sincronizaciones",
+  ],
+  newConnection: [
+    "Connect marketplace",
+    "Marktplatz verbinden",
+    "Connecter marketplace",
+    "Conectar marketplace",
+  ],
+  newOffer: [
+    "Create offer",
+    "Angebot anlegen",
+    "Créer une offre",
+    "Crear oferta",
+  ],
+  refresh: ["Refresh", "Aktualisieren", "Actualiser", "Actualizar"],
+  save: ["Save", "Speichern", "Enregistrer", "Guardar"],
+  cancel: ["Cancel", "Abbrechen", "Annuler", "Cancelar"],
+  edit: ["Edit", "Bearbeiten", "Modifier", "Editar"],
+  empty: [
+    "Nothing here yet. Create a connection to get started.",
+    "Noch keine Einträge. Lege zuerst eine Verbindung an.",
+    "Aucune entrée. Créez une connexion.",
+    "Sin entradas. Crea una conexión.",
+  ],
+  name: ["Name", "Name", "Nom", "Nombre"],
+  channel: [
+    "Marketplace sales channel",
+    "Marktplatz-Verkaufskanal",
+    "Canal marketplace",
+    "Canal marketplace",
+  ],
+  provider: ["Provider", "Anbieter", "Fournisseur", "Proveedor"],
+  account: [
+    "Server credential alias",
+    "Server-Zugangskennung",
+    "Alias serveur",
+    "Alias del servidor",
+  ],
+  destination: [
+    "Marketplace ID",
+    "Marktplatzkennung",
+    "ID marketplace",
+    "ID marketplace",
+  ],
+  locale: [
+    "Content language",
+    "Inhaltssprache",
+    "Langue du contenu",
+    "Idioma del contenido",
+  ],
+  currency: ["Currency", "Währung", "Devise", "Moneda"],
+  active: [
+    "Synchronization enabled",
+    "Synchronisierung aktiviert",
+    "Synchronisation active",
+    "Sincronización activa",
+  ],
+  serverHint: [
+    "Your operator configures seller credentials on the separate Rust service. No secret belongs in these fields.",
+    "Der Betreiber hinterlegt Händlerzugänge im separaten Rust-Dienst. In diese Felder gehören keine Geheimnisse.",
+    "L’opérateur configure les identifiants sur le service Rust. Aucun secret ici.",
+    "El operador configura credenciales en el servicio Rust. No introduzcas secretos.",
+  ],
+  policy: [
+    "Seller policies & category settings",
+    "Händlerrichtlinien & Kategorieeinstellungen",
+    "Règles vendeur et catégorie",
+    "Políticas y categoría",
+  ],
+  productType: [
+    "Product type",
+    "Produkttyp",
+    "Type de produit",
+    "Tipo de producto",
+  ],
+  categoryId: [
+    "Category ID",
+    "Kategoriekennung",
+    "ID catégorie",
+    "ID categoría",
+  ],
+  merchantLocationKey: [
+    "Warehouse identifier",
+    "Lagerkennung",
+    "Identifiant entrepôt",
+    "ID almacén",
+  ],
+  paymentPolicyId: [
+    "Payment policy",
+    "Zahlungsrichtlinie",
+    "Règle de paiement",
+    "Política de pago",
+  ],
+  returnPolicyId: [
+    "Return policy",
+    "Rückgaberichtlinie",
+    "Règle de retour",
+    "Política de devolución",
+  ],
+  fulfillmentPolicyId: [
+    "Delivery policy",
+    "Versandrichtlinie",
+    "Règle de livraison",
+    "Política de envío",
+  ],
+  ean: ["Product EAN", "Produkt-EAN", "EAN produit", "EAN producto"],
+  vatIndicator: [
+    "VAT indicator",
+    "Steuerkennzeichen",
+    "Indicateur TVA",
+    "Indicador IVA",
+  ],
+  shippingGroupId: [
+    "Shipping group",
+    "Versandgruppe",
+    "Groupe livraison",
+    "Grupo de envío",
+  ],
+  product: ["Product", "Produkt", "Produit", "Producto"],
+  sku: ["Seller SKU", "Händler-SKU", "SKU vendeur", "SKU vendedor"],
+  title: [
+    "Custom title · empty inherits",
+    "Eigener Titel · leer erbt",
+    "Titre · vide hérite",
+    "Título · vacío hereda",
+  ],
+  description: [
+    "Custom description · empty inherits",
+    "Eigene Beschreibung · leer erbt",
+    "Description · vide hérite",
+    "Descripción · vacío hereda",
+  ],
+  images: [
+    "Custom public image URLs · one per line",
+    "Eigene öffentliche Bild-URLs · eine pro Zeile",
+    "URLs images · une par ligne",
+    "URLs de imágenes · una por línea",
+  ],
+  attributes: [
+    "Provider fields",
+    "Anbieterfelder",
+    "Attributs fournisseur",
+    "Campos del proveedor",
+  ],
+  mapping: [
+    "Field mapping",
+    "Feldzuordnung",
+    "Mappage de champs",
+    "Mapeo de campos",
+  ],
+  price: [
+    "Price override · minor units",
+    "Abweichender Preis · kleinste Einheit",
+    "Prix · unités mineures",
+    "Precio · unidades menores",
+  ],
+  inherit: [
+    "Empty values inherit catalog content and channel currency pricing.",
+    "Leere Werte erben Kataloginhalte und Preise in der Kanalwährung.",
+    "Les valeurs vides héritent du catalogue et des prix du canal.",
+    "Los valores vacíos heredan catálogo y precios del canal.",
+  ],
+  prepare: [
+    "Preview automatic mapping",
+    "Automatische Zuordnung ansehen",
+    "Aperçu du mappage",
+    "Ver mapeo automático",
+  ],
+  publish: [
+    "Synchronize offer",
+    "Angebot synchronisieren",
+    "Synchroniser offre",
+    "Sincronizar oferta",
+  ],
+  retrieve: [
+    "Retrieve orders",
+    "Bestellungen abholen",
+    "Récupérer commandes",
+    "Recibir pedidos",
+  ],
+  confirmPublish: [
+    "This sends current content, price and stock to your seller account. Review the preview first.",
+    "Dies überträgt aktuelle Inhalte, Preis und Bestand an dein Händlerkonto. Prüfe zuvor die Vorschau.",
+    "Ceci transmet contenu, prix et stock. Vérifiez l’aperçu.",
+    "Envía contenido, precio e inventario. Revisa la vista previa.",
+  ],
+  draft: ["Draft", "Entwurf", "Brouillon", "Borrador"],
+  ready: [
+    "Ready to sync",
+    "Bereit zur Übertragung",
+    "Prêt à synchroniser",
+    "Listo para sincronizar",
+  ],
+  submitted: [
+    "Submitted · provider review",
+    "Übermittelt · Anbieterprüfung",
+    "Soumis · contrôle fournisseur",
+    "Enviado · revisión proveedor",
+  ],
+  needs_review: [
+    "Review required",
+    "Prüfung erforderlich",
+    "À vérifier",
+    "Revisión necesaria",
+  ],
+  uncertain: [
+    "Unknown outcome · reconcile first",
+    "Ergebnis unklar · zuerst abgleichen",
+    "Résultat inconnu · concilier",
+    "Resultado incierto · conciliar",
+  ],
+  imported: ["Imported", "Importiert", "Importé", "Importado"],
+  queued: ["Queued", "Wartet", "En attente", "En cola"],
+  running: ["Running", "Läuft", "En cours", "En curso"],
+  succeeded: ["Complete", "Abgeschlossen", "Terminé", "Completado"],
+  failed: ["Failed", "Fehlgeschlagen", "Échec", "Error"],
+  cancelled: ["Cancelled", "Abgebrochen", "Annulé", "Cancelado"],
+  cancel_requested: [
+    "Cancellation requested",
+    "Abbruch angefordert",
+    "Annulation demandée",
+    "Cancelación solicitada",
+  ],
+  preview: [
+    "Mapping preview",
+    "Zuordnungsvorschau",
+    "Aperçu mappage",
+    "Vista previa mapeo",
+  ],
+  missing: [
+    "Required fields missing",
+    "Pflichtfelder fehlen",
+    "Champs requis manquants",
+    "Faltan campos obligatorios",
+  ],
+  import: [
+    "Import reviewed order",
+    "Geprüfte Bestellung importieren",
+    "Importer commande vérifiée",
+    "Importar pedido revisado",
+  ],
+  review: [
+    "Review order",
+    "Bestellung prüfen",
+    "Vérifier commande",
+    "Revisar pedido",
+  ],
+  reviewHint: [
+    "Confirm seller payment, map all products and enter exact source tax amounts. Vendune never guesses tax.",
+    "Händlerzahlung bestätigen, Produkte zuordnen und exakte Steuern aus der Quelle übernehmen. Vendune schätzt keine Steuern.",
+    "Confirmez paiement, produits et taxes exactes. Aucune taxe estimée.",
+    "Confirma pago, productos e impuestos exactos. No se estiman impuestos.",
+  ],
+  approved: [
+    "I verified payment, totals and taxes against the seller order.",
+    "Ich habe Zahlung, Beträge und Steuern mit der Händlerbestellung abgeglichen.",
+    "Paiement, montants et taxes vérifiés.",
+    "He verificado pago, importes e impuestos.",
+  ],
+  source: [
+    "Original source",
+    "Originale Quelldaten",
+    "Source originale",
+    "Datos originales",
+  ],
+  snapshot: [
+    "Reviewed order snapshot",
+    "Geprüfte Bestelldaten",
+    "Commande vérifiée",
+    "Pedido verificado",
+  ],
+  openOrder: [
+    "Open native order",
+    "Vendune-Bestellung öffnen",
+    "Ouvrir commande",
+    "Abrir pedido",
+  ],
+  next: [
+    "Load next order page",
+    "Nächste Bestellseite laden",
+    "Page suivante commandes",
+    "Siguiente página de pedidos",
+  ],
+  after: [
+    "Updated since (ISO timestamp)",
+    "Geändert seit (ISO-Zeitpunkt)",
+    "Modifié depuis (ISO)",
+    "Modificado desde (ISO)",
+  ],
+  result: ["Result", "Ergebnis", "Résultat", "Resultado"],
+} as const;
+export type MarketText = (key: keyof typeof marketplaceWords) => string;
+export function useMarketText(): MarketText {
+  const { locale } = useLocale();
+  const i = locale.startsWith("de")
+    ? 1
+    : locale.startsWith("fr")
+      ? 2
+      : locale.startsWith("es")
+        ? 3
+        : 0;
+  return (k) => marketplaceWords[k]?.[i] ?? k;
+}
