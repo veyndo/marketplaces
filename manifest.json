@@ -465,9 +465,9 @@
           "name": "order_id",
           "label": {
             "en": "Native order ID",
-            "de": "Sellama-Bestellnummer",
-            "fr": "ID commande Sellama",
-            "es": "ID pedido Sellama"
+            "de": "Veyndo-Bestellnummer",
+            "fr": "ID commande Veyndo",
+            "es": "ID pedido Veyndo"
           },
           "kind": "string"
         },

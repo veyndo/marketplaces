@@ -13,8 +13,8 @@ export const marketplaceWords = {
     "Un catálogo. Más lugares para vender.",
   ],
   intro: [
-    "Connect a seller account, adapt your offers and bring orders back into Sellama.",
-    "Händlerkonto verbinden, Angebote anpassen und Bestellungen in Sellama übernehmen.",
+    "Connect a seller account, adapt your offers and bring orders back into Veyndo.",
+    "Händlerkonto verbinden, Angebote anpassen und Bestellungen in Veyndo übernehmen.",
     "Connectez un compte vendeur, adaptez vos offres et importez les commandes.",
     "Conecta tu cuenta, adapta ofertas e importa pedidos.",
   ],
@@ -278,8 +278,8 @@ export const marketplaceWords = {
     "Revisar pedido",
   ],
   reviewHint: [
-    "Confirm seller payment, map all products and enter exact source tax amounts. Sellama never guesses tax.",
-    "Händlerzahlung bestätigen, Produkte zuordnen und exakte Steuern aus der Quelle übernehmen. Sellama schätzt keine Steuern.",
+    "Confirm seller payment, map all products and enter exact source tax amounts. Veyndo never guesses tax.",
+    "Händlerzahlung bestätigen, Produkte zuordnen und exakte Steuern aus der Quelle übernehmen. Veyndo schätzt keine Steuern.",
     "Confirmez paiement, produits et taxes exactes. Aucune taxe estimée.",
     "Confirma pago, productos e impuestos exactos. No se estiman impuestos.",
   ],
@@ -303,7 +303,7 @@ export const marketplaceWords = {
   ],
   openOrder: [
     "Open native order",
-    "Sellama-Bestellung öffnen",
+    "Veyndo-Bestellung öffnen",
     "Ouvrir commande",
     "Abrir pedido",
   ],
