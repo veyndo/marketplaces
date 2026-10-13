@@ -1,4 +1,4 @@
-/* App-owned responsive workspace uses seLLM surface tokens; no global selectors or provider scripts. */
+/* App-owned responsive workspace uses Sellama surface tokens; no global selectors or provider scripts. */
 .market-studio {
   --market-surface: var(--surface, #fff);
   --market-border: var(--border, #dbe4f1);

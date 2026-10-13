@@ -189,7 +189,7 @@ impl App {
                 .header("Shop-Client-Key", key)
                 .header("Shop-Timestamp", stamp)
                 .header("Shop-Signature", sign)
-                .header("User-Agent", "seLLM/MarketplaceStudio");
+                .header("User-Agent", "Sellama/MarketplaceStudio");
             if body.is_some() {
                 r = r.header("Content-Type", "application/json").body(raw);
             }
