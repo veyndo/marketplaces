@@ -13,8 +13,8 @@ export const marketplaceWords = {
     "Un catálogo. Más lugares para vender.",
   ],
   intro: [
-    "Connect a seller account, adapt your offers and bring orders back into Vendune.",
-    "Händlerkonto verbinden, Angebote anpassen und Bestellungen in Vendune übernehmen.",
+    "Connect a seller account, adapt your offers and bring orders back into seLLM.",
+    "Händlerkonto verbinden, Angebote anpassen und Bestellungen in seLLM übernehmen.",
     "Connectez un compte vendeur, adaptez vos offres et importez les commandes.",
     "Conecta tu cuenta, adapta ofertas e importa pedidos.",
   ],
@@ -278,8 +278,8 @@ export const marketplaceWords = {
     "Revisar pedido",
   ],
   reviewHint: [
-    "Confirm seller payment, map all products and enter exact source tax amounts. Vendune never guesses tax.",
-    "Händlerzahlung bestätigen, Produkte zuordnen und exakte Steuern aus der Quelle übernehmen. Vendune schätzt keine Steuern.",
+    "Confirm seller payment, map all products and enter exact source tax amounts. seLLM never guesses tax.",
+    "Händlerzahlung bestätigen, Produkte zuordnen und exakte Steuern aus der Quelle übernehmen. seLLM schätzt keine Steuern.",
     "Confirmez paiement, produits et taxes exactes. Aucune taxe estimée.",
     "Confirma pago, productos e impuestos exactos. No se estiman impuestos.",
   ],
@@ -303,7 +303,7 @@ export const marketplaceWords = {
   ],
   openOrder: [
     "Open native order",
-    "Vendune-Bestellung öffnen",
+    "seLLM-Bestellung öffnen",
     "Ouvrir commande",
     "Abrir pedido",
   ],

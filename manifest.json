@@ -465,9 +465,9 @@
           "name": "order_id",
           "label": {
             "en": "Native order ID",
-            "de": "Vendune-Bestellnummer",
-            "fr": "ID commande Vendune",
-            "es": "ID pedido Vendune"
+            "de": "seLLM-Bestellnummer",
+            "fr": "ID commande seLLM",
+            "es": "ID pedido seLLM"
           },
           "kind": "string"
         },
