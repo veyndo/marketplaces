@@ -42,7 +42,8 @@ export default function MarketplacePanel({
   const orderLink = (id: string) => {
     const url = new URL(window.location.href);
     url.searchParams.set("studio", "orders");
-    url.searchParams.set("order", id);
+    url.searchParams.delete("order");
+    url.searchParams.set("entity", id);
     url.hash = "merchant";
     return url.href;
   };
