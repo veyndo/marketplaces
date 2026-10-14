@@ -241,3 +241,26 @@
     transition: none;
   }
 }
+
+.marketplace-workspace {
+  display: grid;
+  gap: 24px;
+}
+.marketplace-workspace .page-intro {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+.market-launch-card {
+  display: grid;
+  justify-items: start;
+  gap: 18px;
+  max-width: 760px;
+}
+.market-launch-card ol {
+  display: grid;
+  gap: 14px;
+  padding-left: 24px;
+  color: var(--muted);
+  line-height: 1.6;
+}

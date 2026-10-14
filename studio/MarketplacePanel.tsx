@@ -16,10 +16,12 @@ export default function MarketplacePanel({
   request,
   manage,
   mainLocale,
+  channel,
 }: {
   request: RequestFn;
   manage: boolean;
   mainLocale: string;
+  channel?: string;
 }) {
   const t = useMarketText(),
     { locale } = useLocale(),
@@ -199,7 +201,10 @@ export default function MarketplacePanel({
       {editor?.entity === "connections" ? (
         <ConnectionEditor
           key={editor.row.id}
-          initial={editor.row}
+          initial={{
+            ...editor.row,
+            channel_id: editor.row.channel_id || channel || "",
+          }}
           mainLocale={mainLocale}
           request={request}
           busy={busy}
