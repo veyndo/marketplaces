@@ -5,6 +5,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[4];sys.path.insert(0,str(ROOT/'scripts'))
 from testing.app_approval import consent,pin
 from testing.runtime import serve,stop
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from order_localization import verify as verify_order_localization
 suffix=uuid.uuid4().hex[:8];env=dict(os.environ);package=json.loads((ROOT/'extensions/apps/marketplaces/manifest.json').read_text());gateway='synthetic-marketplace-'+suffix+'x'*30
 
 def port():
@@ -45,7 +47,7 @@ def call(base,path,data=None,h=None,status=200,method=None):
  try:r=urllib.request.urlopen(req,timeout=30)
  except urllib.error.HTTPError as e:r=e
  v=r.read() if path.endswith('/pdf') else json.load(r);assert r.status in (status if isinstance(status,tuple)else(status,)),(path,r.status,status,v);return v
-core_env={**env,'BIND_ADDR':core_url.removeprefix('http://'),'BASE_URL':core_url,'APP_SERVICES':json.dumps(pin({'marketplaces':{'url':adapter_url,'token':gateway}},'marketplaces',package)),'ALLOW_BOOTSTRAP_AUTH':'false'}
+core_env={**env,'RUST_LOG':'sqlx::query=debug','BIND_ADDR':core_url.removeprefix('http://'),'BASE_URL':core_url,'APP_SERVICES':json.dumps(pin({'marketplaces':{'url':adapter_url,'token':gateway}},'marketplaces',package)),'ALLOW_BOOTSTRAP_AUTH':'false'}
 (ROOT/'artifacts').mkdir(exist_ok=True);log=(ROOT/'artifacts/marketplaces.log').open('w');core=adapter=None
 try:
  core=serve(core_env,core_url,log);tenants={};owners={}
@@ -132,6 +134,7 @@ try:
  call(core_url,'/api/merchant/receipts/settings',{'revision':seller['revision'],'data':{'name':'Synthetic Seller GmbH','address':'Test Street 1, Berlin','taxId':'TEST-ONLY'}},h,method='PUT')
  receipt=call(core_url,'/api/merchant/orders/'+oid+'/receipts',{'revision':order['revision'],'kind':'invoice','locale':'de','requestKey':'external-invoice-'+suffix},h)
  assert call(core_url,'/api/merchant/receipts/'+receipt['id']+'/pdf',h=h).startswith(b'%PDF-1.4')
+ verify_order_localization(call,core_url,h,foreign,kh,snapshot,env,ROOT/'artifacts/marketplaces.log')
  ch=call(core_url,'/api/automation',h=h)['channels'];channel=next(c for c in ch if c['id']=='amazon')
  call(core_url,'/api/automation/channels/amazon',{'revision':channel['revision'],'data':{**channel['data'],'active':False}},h,method='PUT')
  action('prepare',{'listingId':'amazon'},status=502)
