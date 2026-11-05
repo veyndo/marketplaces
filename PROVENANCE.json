@@ -1,0 +1,7 @@
+{
+  "sourceRepository": "https://github.com/veyndo/veyndo",
+  "sourceCommit": "5364c139d2c6cd78862bbd75f4bde4112e17018d",
+  "sourceDirectory": "extensions/apps/marketplaces",
+  "extractedHistoryCommit": "a2fb521867565bb6c294a88b2926f9188eabb202",
+  "method": "git subtree split; original provider/UI/test history retained"
+}

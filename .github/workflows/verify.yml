@@ -1,0 +1,33 @@
+name: Marketplace component
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  component:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: cargo fmt --check && cargo test --locked && cargo clippy --locked -- -D warnings && cargo build --locked
+      - run: npm ci --ignore-scripts && npm test
+      - run: docker build -t veyndo-marketplaces .
+      - name: Smoke packaged runtime
+        run: |
+          docker run -d --name gateway -p 8799:8799 -e APP_TOKEN=synthetic-fixture-gateway-00000000 -e 'APP_MARKETPLACE_TENANTS={"test":{"coreUrl":"https://example.test","callbackToken":"synthetic-fixture-callback-00000000","accounts":{}}}' veyndo-marketplaces
+          trap 'docker rm -f gateway' EXIT
+          for i in $(seq 1 30); do curl --fail http://127.0.0.1:8799/health && break || sleep 1; done
+          curl --fail http://127.0.0.1:8799/health
+          test "$(docker exec gateway id -u)" = 65532
+          ! docker exec gateway sh -c 'command -v python3'

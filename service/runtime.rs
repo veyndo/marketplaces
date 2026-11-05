@@ -78,16 +78,20 @@ pub(super) async fn action(
     Json(v): Json<Value>,
 ) -> Result<Json<Value>> {
     let t = a.tenant(&h)?.to_owned();
+    dispatch(&a, &t, &name, &v).await.map(Json)
+}
+
+pub(super) async fn dispatch(a: &App, t: &str, name: &str, v: &Value) -> Result<Value> {
     let _permit = a.capacity.clone().try_acquire_owned().map_err(|_| {
         error(
             StatusCode::TOO_MANY_REQUESTS,
             "Marketplace service is busy; retry after current jobs finish",
         )
     })?;
-    Ok(Json(match name.as_str() {
-        "prepare" => mapping::prepare(&a, &t, &v).await?,
-        "review_order" => review::draft(&a, &t, &v).await?,
-        "import_order" => intake::import(&a, &t, &v).await?,
-        _ => return Err(error(StatusCode::NOT_FOUND, "Unknown marketplace action")),
-    }))
+    match name {
+        "prepare" => mapping::prepare(a, t, v).await,
+        "review_order" => review::draft(a, t, v).await,
+        "import_order" => intake::import(a, t, v).await,
+        _ => Err(error(StatusCode::NOT_FOUND, "Unknown marketplace action")),
+    }
 }

@@ -7,6 +7,7 @@ mod intake;
 mod jobs;
 mod kaufland;
 mod mapping;
+mod mcp;
 mod providers;
 mod review;
 mod runtime;
@@ -52,6 +53,7 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         )
         .route("/actions/{action}", post(runtime::action))
         .route("/events", post(jobs::events))
+        .route("/mcp", post(mcp::handle))
         .layer(DefaultBodyLimit::max(65536))
         .with_state(a);
     let bind = std::env::var("APP_BIND_ADDR").unwrap_or("0.0.0.0:8799".into());
