@@ -40,3 +40,38 @@ Host callback keys remain revocable and scoped independently for each tenant.
 A transport failure after a write is uncertain. Neither the SDK nor gateway
 blindly retries. Inspect the durable job/listing fence and provider result before
 explicit continuation. Process health does not establish seller authorization.
+
+## Versioned host port and complete action surface
+
+A tenant may set `hostPath`, for example `/commerce/v1/`, to connect an independent
+host without implementing Veyndo URL names. The existing default path is unchanged.
+Paths are operator configuration, fixed at startup, and reject foreign origins,
+encoded separators, traversal, query and fragment data. Callbacks send
+`x-veyndo-host-version: 1`. Veyndo accepts legacy callers without that header and
+rejects an unsupported explicit version before executing an operation.
+
+The canonical generic input contract is exported as
+`@veyndo/sdk/host-contract`; `@veyndo/sdk/host` supplies generated TypeScript inputs
+and a bounded server client. Its provenance points to the native source. See
+[host.mjs](../examples/host.mjs) for an independent host URL.
+
+All declared record list/save actions now work through `/actions/{name}` and MCP,
+with unchanged record schemas and revisions. `sync` additionally accepts an
+explicit `requestKey` (1..100 bytes). HTTP and MCP both delegate to `job_enqueue`:
+
+```json
+{"connectionId":"ebay-de","kind":"orders","requestKey":"stable-request-1"}
+```
+
+The host `job_enqueue` input is `{action, input, requestKey}`. It must select a
+registered job action, validate its schema, current actor rights and additional
+permissions, then persist the native idempotent job and its event atomically.
+In Veyndo it enters the original app gateway and queue. It cannot call a service,
+save data or execute arbitrary actions through this callback. Missing capability,
+PII scope, revoked credential, foreign tenant, stale package and private workspace
+retain the existing admission. Reusing the same key with changed input conflicts.
+
+Other host operations remain `record_action`, `channel`, `channel_product`,
+`order_import`, `job_claim` and `job_progress`. The host owns durable state and
+commerce transactions. The direct gateway credential remains server authority;
+per-user browser/agent clients must use the host permission gateway.

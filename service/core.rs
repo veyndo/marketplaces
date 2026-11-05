@@ -10,12 +10,13 @@ impl App {
         let response = self
             .http
             .post(format!(
-                "{}/api/apps/{}/core/{op}",
+                "{}{}{op}",
                 c.core_url.trim_end_matches('/'),
-                "marketplaces"
+                c.host_path
             ))
             .bearer_auth(&c.callback_token)
             .header("x-tenant", t)
+            .header("x-veyndo-host-version", "1")
             .json(&v)
             .send()
             .await

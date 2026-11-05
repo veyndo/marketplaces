@@ -3,5 +3,5 @@
   "private": true,
   "type": "module",
   "scripts": {"test": "MARKETPLACE_SDK_EXAMPLE=1 python3 tests/standalone.py"},
-  "devDependencies": {"@veyndo/sdk": "https://github.com/veyndo/sdk/releases/download/v0.1.1/veyndo-sdk-0.1.1.tgz"}
+  "devDependencies": {"@veyndo/sdk": "https://github.com/veyndo/sdk/releases/download/v0.2.0/veyndo-sdk-0.2.0.tgz"}
 }

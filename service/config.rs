@@ -17,8 +17,14 @@ pub struct Account {
 pub struct Tenant {
     pub core_url: String,
     pub callback_token: String,
+    #[serde(default = "default_host_path")]
+    pub host_path: String,
     pub accounts: HashMap<String, Account>,
 }
+fn default_host_path() -> String {
+    "/api/apps/marketplaces/core/".into()
+}
+
 pub struct Config {
     pub gateway_token: String,
     pub tenants: HashMap<String, Tenant>,
@@ -48,6 +54,7 @@ impl Config {
             {
                 return Err("Invalid fixed core URL".into());
             }
+            validate_host_path(&t.host_path)?;
             for a in t.accounts.values() {
                 if !["amazon", "ebay", "kaufland"].contains(&a.provider.as_str())
                     || a.region
@@ -78,5 +85,42 @@ impl Config {
             tenants,
             fixture,
         })
+    }
+}
+
+fn validate_host_path(path: &str) -> std::result::Result<(), Box<dyn std::error::Error>> {
+    if !path.starts_with('/')
+        || path.starts_with("//")
+        || !path.ends_with('/')
+        || path.len() > 200
+        || path.contains("//")
+        || !path
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || "/_-".contains(c))
+    {
+        return Err("Host path must be a fixed absolute path with a trailing slash".into());
+    }
+    Ok(())
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn host_paths_cannot_change_origin_or_traverse() {
+        for path in [
+            "//elsewhere/",
+            "/../secret/",
+            "/%2e%2e/",
+            "/x?secret/",
+            "/x#secret/",
+            "/x\\evil/",
+            "https://evil.test/",
+            "/x//y/",
+        ] {
+            assert!(validate_host_path(path).is_err(), "{path}");
+        }
+        assert!(validate_host_path("/commerce/v1/").is_ok());
+        let old: Tenant = serde_json::from_value(serde_json::json!({"coreUrl":"https://example.test","callbackToken":"test","accounts":{}})).unwrap();
+        assert_eq!(old.host_path, "/api/apps/marketplaces/core/");
     }
 }
