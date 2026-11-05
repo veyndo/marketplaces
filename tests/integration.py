@@ -2,7 +2,7 @@
 import json,os,socket,subprocess,sys,time,uuid,urllib.request,urllib.error,threading,concurrent.futures,hmac,hashlib
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[4];sys.path.insert(0,str(ROOT/'scripts'))
+ROOT=Path(os.environ.get('VEYNDO_ROOT',Path(__file__).resolve().parents[4]));sys.path.insert(0,str(ROOT/'scripts'))
 from testing.app_approval import consent,pin
 from testing.runtime import serve,stop
 sys.path.insert(0,str(Path(__file__).resolve().parent))
@@ -88,6 +88,36 @@ try:
  j=call(core_url,app+'sync',{'connectionId':'kaufland','kind':'listing','listingId':'kaufland'},{**h,'Idempotency-Key':'kaufland-update-'+suffix});finish(j['jobId'])
  assert sum(r[0]=='POST' and r[1].startswith('/v2/units') for r in requests)==1
  assert any(r[0]=='PATCH' and r[1].startswith('/v2/units/11') for r in requests)
+ # The independent HTTP and MCP entrypoints use the same native CAS/queue owners.
+ independent_headers={'x-tenant':t,'Authorization':'Bearer '+gateway}
+ listed=call(adapter_url,'/actions/list_connections',{},independent_headers)
+ assert len(listed['elements'])==3
+ args={'connectionId':'ebay','kind':'orders','requestKey':'independent-'+suffix}
+ first=call(adapter_url,'/actions/sync',args,independent_headers)
+ rpc=call(adapter_url,'/mcp',{'jsonrpc':'2.0','id':'replay','method':'tools/call','params':{'name':'sync','arguments':args}},independent_headers)
+ replay=rpc['result']['structuredContent'];assert first['jobId']==replay['jobId'] and replay['reused'] and not first['reused']
+ finish(first['jobId'])
+ call(adapter_url,'/actions/sync',{**args,'kind':'listing'},independent_headers,409)
+ current=next(x for x in rows('listings')if x['id']=='amazon')
+ call(adapter_url,'/actions/save_listings',{'id':'amazon','revision':0,'fields':{k:v for k,v in current.items()if k not in ['id','revision']}},independent_headers,409)
+ callback_headers={'x-tenant':t,'Authorization':'Bearer '+tenants[t]['callbackToken']}
+ callback='/api/apps/marketplaces/core/job_enqueue'
+ call(core_url,callback,{'action':'prepare','input':{},'requestKey':'bad-type'},callback_headers,400)
+ call(core_url,callback,{'action':'sync','input':{},'requestKey':'bad-input'},callback_headers,400)
+ call(core_url,callback,{'action':'sync','input':{'connectionId':'ebay','kind':'orders'},'requestKey':'version'}, {**callback_headers,'x-veyndo-host-version':'2'},400)
+ digest=call(core_url,'/api/apps/marketplaces/credentials',h=h)['digest']
+ limited=call(core_url,'/api/apps/marketplaces/credentials',{'digest':digest,'approve':True,'permissions':['data.read'],'expiresInDays':1},h)
+ low={'x-tenant':t,'Authorization':'Bearer '+limited['key']}
+ before=len(call(core_url,'/api/apps/marketplaces/jobs',h=h)['jobs'])
+ call(core_url,callback,{'action':'sync','input':{'connectionId':'ebay','kind':'orders'},'requestKey':'denied'},low,403)
+ call(core_url,callback,{'action':'sync','input':{'connectionId':'ebay','kind':'orders'},'requestKey':'foreign'}, {**callback_headers,'x-tenant':foreign['x-tenant']},403)
+ limited_job=call(core_url,'/api/apps/marketplaces/credentials',{'digest':digest,'approve':True,'permissions':['jobs.write'],'expiresInDays':1},h)
+ job_key={'x-tenant':t,'Authorization':'Bearer '+limited_job['key']}
+ call(core_url,callback,{'action':'sync','input':{'connectionId':'ebay','kind':'orders'},'requestKey':'missing-pii'},job_key,403)
+ call(core_url,'/api/apps/marketplaces/credentials/'+limited_job['id'],h=h,method='DELETE')
+ call(core_url,callback,{'action':'sync','input':{'connectionId':'ebay','kind':'orders'},'requestKey':'revoked'},job_key,401)
+ assert len(call(core_url,'/api/apps/marketplaces/jobs',h=h)['jobs'])==before
+ print('PASS independent HTTP/MCP listing and sync, one native job on replay, stale CAS, wrong version, denied capability and foreign tenant with no queued side effects')
  assert len(rows('inbox'))==3
  assert any('/orders/2026-01-01/orders' in r[1] for r in requests)
  assert any('/publish' in r[1] for r in requests)

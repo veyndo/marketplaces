@@ -31,7 +31,8 @@ embeddable frontend package and independent durable host adapter remain planned.
 ## HTTP, MCP and JavaScript
 
 The server exposes `/health`, `/actions/{action}`, `/events` and `/mcp`. HTTP and
-MCP share actions and effects. MCP schemas come from the manifest. Only trusted
+MCP share actions and effects. MCP schemas come from the manifest; all record actions and idempotent sync share
+the same host delegation. `hostPath` supports independent commerce hosts. Only trusted
 server gateways may use the service credential; browser/user clients go through
 the host's current permissions and installation consent.
 
@@ -53,14 +54,15 @@ npm ci --ignore-scripts
 npm test
 ```
 
-Seven Rust tests exercise mapping, exact currency, provider prerequisites, source
+Eight Rust tests exercise mapping, exact currency, provider prerequisites, source
 addresses, event admission and fixed provider origins. The standalone test starts
 the real binary with an independent host and exercises HTTP/MCP/SDK, shared state,
 wrong credentials, foreign tenants, rejected imports and language inheritance.
 It makes no external provider requests. CI also checks the production container.
 
 `tests/integration.py` is the connected Veyndo/PostgreSQL/provider-fixture suite.
-Run it through `python3 scripts/marketplaces.py` in the Veyndo composition. It
+Run it through `python3 scripts/marketplaces.py` in the Veyndo composition, or set
+`VEYNDO_ROOT` to its absolute checkout when running the fixture from this repository. It
 covers listing sync, paid import, replay/restart, stock, documents and permissions.
 Its fixture results do not certify live seller accounts or category schemas.
 

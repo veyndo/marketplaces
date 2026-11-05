@@ -19,12 +19,23 @@ pub(super) async fn handle(
         ));
     }
     let manifest: Value = serde_json::from_str(MANIFEST).expect("bundled manifest");
-    let actions: Vec<&Value> = manifest["actions"]
+    let mut actions: Vec<Value> = manifest["actions"]
         .as_array()
         .expect("actions")
         .iter()
-        .filter(|action| action["handler"] == "service" && action["mcp"] == true)
+        .filter(|action| action["mcp"] == true)
+        .cloned()
         .collect();
+    // The service adapter carries its idempotency key explicitly. The installed
+    // package keeps its original native job schema and gateway behavior.
+    if let Some(sync) = actions.iter_mut().find(|action| action["name"] == "sync") {
+        sync["inputSchema"]["properties"]["requestKey"] =
+            json!({"type":"string","minLength":1,"maxLength":100});
+        sync["inputSchema"]["required"]
+            .as_array_mut()
+            .unwrap()
+            .push(json!("requestKey"));
+    }
     let result = match v["method"].as_str() {
         Some("initialize") => {
             json!({"protocolVersion":"2025-11-25","capabilities":{"tools":{}},"serverInfo":{"name":"veyndo-marketplaces","version":env!("CARGO_PKG_VERSION")}})

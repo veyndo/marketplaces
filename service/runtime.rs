@@ -92,6 +92,35 @@ pub(super) async fn dispatch(a: &App, t: &str, name: &str, v: &Value) -> Result<
         "prepare" => mapping::prepare(a, t, v).await,
         "review_order" => review::draft(a, t, v).await,
         "import_order" => intake::import(a, t, v).await,
-        _ => Err(error(StatusCode::NOT_FOUND, "Unknown marketplace action")),
+        "sync" => {
+            let mut input = v.clone();
+            let key = input
+                .as_object_mut()
+                .and_then(|m| m.remove("requestKey"))
+                .ok_or(error(
+                    StatusCode::BAD_REQUEST,
+                    "An explicit requestKey is required for synchronization",
+                ))?;
+            a.callback(
+                t,
+                "job_enqueue",
+                json!({"action":"sync","input":input,"requestKey":key}),
+            )
+            .await
+        }
+        _ => {
+            let actions: Value =
+                serde_json::from_str(include_str!("../manifest.json")).expect("bundled manifest");
+            if actions["actions"].as_array().unwrap().iter().any(|action| {
+                action["name"] == name
+                    && ["list", "save"]
+                        .iter()
+                        .any(|handler| action["handler"] == *handler)
+            }) {
+                a.record(t, name, v.clone()).await
+            } else {
+                Err(error(StatusCode::NOT_FOUND, "Unknown marketplace action"))
+            }
+        }
     }
 }
