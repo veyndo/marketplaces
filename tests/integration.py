@@ -7,6 +7,7 @@ from testing.app_approval import consent,pin
 from testing.runtime import serve,stop
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from order_localization import verify as verify_order_localization
+from shared_stock import verify as verify_shared_stock
 suffix=uuid.uuid4().hex[:8];env=dict(os.environ);package=json.loads((ROOT/'extensions/apps/marketplaces/manifest.json').read_text());gateway='synthetic-marketplace-'+suffix+'x'*30
 
 def port():
@@ -165,6 +166,7 @@ try:
  receipt=call(core_url,'/api/merchant/orders/'+oid+'/receipts',{'revision':order['revision'],'kind':'invoice','locale':'de','requestKey':'external-invoice-'+suffix},h)
  assert call(core_url,'/api/merchant/receipts/'+receipt['id']+'/pdf',h=h).startswith(b'%PDF-1.4')
  verify_order_localization(call,core_url,h,foreign,kh,snapshot,env,ROOT/'artifacts/marketplaces.log')
+ verify_shared_stock(call,core_url,h,kh,snapshot,suffix)
  ch=call(core_url,'/api/automation',h=h)['channels'];channel=next(c for c in ch if c['id']=='amazon')
  call(core_url,'/api/automation/channels/amazon',{'revision':channel['revision'],'data':{**channel['data'],'active':False}},h,method='PUT')
  action('prepare',{'listingId':'amazon'},status=502)
