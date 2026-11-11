@@ -9,6 +9,12 @@ tests. Its history was extracted from `veyndo/veyndo`, recorded in
 [PROVENANCE.json](PROVENANCE.json). Changes belong here; Veyndo consumes a pinned,
 verified source snapshot so ordinary clones and existing frontend builds work.
 
+## Current status
+
+The latest composition tests used one last stock unit across native checkout, POS and Marketplace. The paid snapshot keeps its source amounts and tax, and Core books the order, stock and event in one transaction. The public v0.2.0 prerelease and running Core have separate version records.
+
+[Component guide](https://www.veyndo.ai/docs/marketplaces.html) · [Hosted status](https://www.veyndo.ai/docs/status.html) · [Versions](https://www.veyndo.ai/docs/components.json)
+
 ## Build and run
 
 ```sh

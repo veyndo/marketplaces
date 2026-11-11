@@ -11,4 +11,4 @@ uses one content-language selector and inherited overrides; `OrderReview` and
 EN/DE/FR/ES vocabulary. Styles are scoped to `.market-studio` and use Veyndo tokens.
 
 Tests: frontend marketplace interaction tests and app-owned HTTP integration suite.
-See [setup and boundaries](../../../../docs/marketplaces.md).
+See [setup and boundaries](https://www.veyndo.ai/docs/marketplaces.html).
