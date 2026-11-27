@@ -1,8 +1,24 @@
+<p align="center">
+  <img src="https://github.com/veyndo/veyndo/raw/main/docs/brand/veyndo-readme.svg" alt="Veyndo Commerce: commerce that thinks and acts." width="100%">
+</p>
+
 # Veyndo Marketplace Studio
 
-Connect Amazon, eBay and Kaufland to a commerce host. Map product fields, maintain
-channel-specific content and images, synchronize offers and review imported orders.
-The same Rust provider code powers Marketplace Studio inside Veyndo Commerce.
+**Sell on Amazon, eBay and Kaufland from one catalog, without a second source of truth.**
+Map product fields, keep channel-specific content and images, synchronize offers and
+review imported orders. The last unit in stock is sold exactly once, whether it goes
+through your shop, the POS or a marketplace: the commerce host books order, stock and
+event in one transaction.
+
+| | |
+| --- | --- |
+| 🛒 **Three marketplaces, one gateway** | Amazon, eBay and Kaufland providers in one independent Rust service and container. |
+| 🧭 **Channel content** | Field mapping, channel texts and images, offer sync and order review in Studio views. |
+| 🤖 **Agent-ready** | HTTP and MCP share the same actions; MCP schemas come from the manifest. |
+| 🔒 **Host-owned truth** | No Core source or database credentials needed; the host keeps permissions, stock and paid-order intake. |
+
+The same Rust provider code powers Marketplace Studio inside
+[Veyndo Commerce](https://github.com/veyndo/veyndo), the AI-native commerce platform built in Rust.
 
 This repository owns the provider gateway, manifest, Studio views, container and
 tests. Its history was extracted from `veyndo/veyndo`, recorded in
